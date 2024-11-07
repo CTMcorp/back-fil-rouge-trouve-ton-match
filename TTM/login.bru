@@ -1,0 +1,21 @@
+meta {
+  name: login
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstname": "Marie",
+    "lastname": "Tcht",
+    "email": "marie@tcht.com",
+    "password": "test",
+    "role": "Admin"
+  }
+}

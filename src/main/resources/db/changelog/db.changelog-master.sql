@@ -5,8 +5,7 @@ CREATE DATABASE ttm;
 --changeset ttm:1
 
 CREATE TABLE IF NOT EXISTS roles (
-    id varchar(36) default(gen_random_uuid()) primary key,
-    name varchar(10)
+    name varchar(10) primary key
 );
 --rollback drop table roles
 
@@ -14,9 +13,11 @@ CREATE TABLE IF NOT EXISTS users (
     id varchar(36) default(gen_random_uuid()) primary key,
     firstname text,
     lastname text,
+    email text,
+    password text,
     description text,
-    roles_id varchar(36),
-    CONSTRAINT fk_roles FOREIGN KEY(roles_id) REFERENCES roles(id)
+    roles_name varchar(10),
+    CONSTRAINT fk_roles FOREIGN KEY(roles_name) REFERENCES roles(name)
 );
 --rollback drop table users
 
