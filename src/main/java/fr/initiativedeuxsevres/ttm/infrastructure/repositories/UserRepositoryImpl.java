@@ -1,6 +1,5 @@
 package fr.initiativedeuxsevres.ttm.infrastructure.repositories;
 
-import fr.initiativedeuxsevres.ttm.domain.models.Roles;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,10 +17,10 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public User register(String firstname, String lastname, String email, String password, Roles role) {
+    public User register(String firstname, String lastname, String email, String password, String role) {
         jdbcTemplate.update(
-                "INSERT INTO users(firstname, lastname, email, password, roles_name) VALUES (?, ?, ?, ?, ?)",
-                firstname, lastname, email, password, role.name()
+                "INSERT INTO users(firstname, lastname, email, password, role) VALUES (?, ?, ?, ?, ?)",
+                firstname, lastname, email, password, role
         );
         return logIn(email);
     }
@@ -29,9 +28,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User logIn(String email) {
         return jdbcTemplate.queryForObject(
-                "SELECT users.*, roles.name AS roles_name FROM users JOIN roles ON roles.name = users.roles_name WHERE email = ?",
+                "SELECT users.* FROM users WHERE email = ?",
                 (rs, rowNum) -> {
-                    Roles role = new Roles(rs.getString("roles_name"));
                     return new User(
                             UUID.fromString(rs.getString("id")),
                             rs.getString("firstname"),
@@ -39,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
                             rs.getString("email"),
                             rs.getString("password"),
                             rs.getString("description"),
-                            role
+                            rs.getString("role")
                             );
                 }, email);
     }

@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-public record User(UUID userId, String firstname, String lastname, String email, String password, String description, Roles role) implements UserDetails {
+public record User(UUID userId, String firstname, String lastname, String email, String password, String description, String role) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

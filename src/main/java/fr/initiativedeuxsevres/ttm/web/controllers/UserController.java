@@ -1,10 +1,8 @@
 package fr.initiativedeuxsevres.ttm.web.controllers;
 
-import fr.initiativedeuxsevres.ttm.domain.models.Roles;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.services.UserService;
 import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
-import fr.initiativedeuxsevres.ttm.web.dto.RolesDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +43,7 @@ public class UserController {
                 loginRequest.lastname(),
                 loginRequest.email(),
                 loginRequest.password(),
-                new Roles(loginRequest.role())
+                loginRequest.role()
                 );
         return userMapper.mapUserToUserDto(user);
     }

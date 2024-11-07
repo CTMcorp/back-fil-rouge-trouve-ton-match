@@ -1,8 +1,6 @@
 package fr.initiativedeuxsevres.ttm.web.mapper;
 
-import fr.initiativedeuxsevres.ttm.domain.models.Roles;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
-import fr.initiativedeuxsevres.ttm.web.dto.RolesDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +15,6 @@ public class UserMapperDto {
                 user.email(),
                 user.password(),
                 user.description(),
-                user.role().name());
+                user.role());
     }
 }

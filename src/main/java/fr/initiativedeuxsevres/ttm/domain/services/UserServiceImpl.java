@@ -1,6 +1,5 @@
 package fr.initiativedeuxsevres.ttm.domain.services;
 
-import fr.initiativedeuxsevres.ttm.domain.models.Roles;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +17,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(String firstname, String lastname, String email, String password, Roles role) {
+    public User register(String firstname, String lastname, String email, String password, String role) {
         if (role == null) {
             throw new IllegalArgumentException("Role cannot be null");
         }
