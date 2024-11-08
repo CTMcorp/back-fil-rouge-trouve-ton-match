@@ -1,7 +1,8 @@
-package fr.initiativedeuxsevres.ttm.domain.services;
+package fr.initiativedeuxsevres.ttm.domain.services.servicesimpl;
 
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
+import fr.initiativedeuxsevres.ttm.domain.services.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
