@@ -1,11 +1,12 @@
 package fr.initiativedeuxsevres.ttm.infrastructure.repositories;
 
-import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 import fr.initiativedeuxsevres.ttm.domain.models.TypesAccompagnement;
+import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.TypesAccompagnementRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,31 @@ public class TypesAccompagnementRepositoryImpl implements TypesAccompagnementRep
 
     public TypesAccompagnementRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public User addUserType(UUID userId, UUID typeId) {
+        String insert = "INSERT INTO users_types (users_id, types_id) VALUES (?, ?)";
+        jdbcTemplate.update(insert, userId, typeId);
+
+        String select = "SELECT users.*, types.name FROM users JOIN users_types us ON users.id = us.users_id JOIN types ON types.id = us.types_id WHERE types.id = ?";
+        return getUser(typeId, select, jdbcTemplate);
+    }
+
+    static User getUser(UUID typeId, String select, JdbcTemplate jdbcTemplate) {
+        return jdbcTemplate.queryForObject(select,
+                new Object[]{typeId.toString()}, (rs, rowNum) ->
+                        new User(
+                                UUID.fromString(rs.getString("id")),
+                                rs.getString("firstname"),
+                                rs.getString("lastname"),
+                                rs.getString("email"),
+                                rs.getString("password"),
+                                rs.getString("description"),
+                                rs.getString("role"),
+                                new ArrayList<>(),
+                                new ArrayList<>()
+                        ));
     }
 
     @Override

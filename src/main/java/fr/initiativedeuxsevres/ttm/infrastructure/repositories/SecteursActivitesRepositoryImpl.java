@@ -6,10 +6,11 @@ import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesReposito
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import static fr.initiativedeuxsevres.ttm.infrastructure.repositories.TypesAccompagnementRepositoryImpl.getUser;
 
 @Repository
 public class SecteursActivitesRepositoryImpl implements SecteursActivitesRepository {
@@ -25,20 +26,7 @@ public class SecteursActivitesRepositoryImpl implements SecteursActivitesReposit
         jdbcTemplate.update(insert, userId, secteurId);
 
         String select = "SELECT users.*, secteurs.name FROM users JOIN users_secteurs us ON users.id = us.users_id JOIN secteurs ON secteurs.id = us.secteurs_id WHERE secteurs.id = ?";
-        User user = jdbcTemplate.queryForObject(select,
-                new Object[]{secteurId.toString()}, (rs, rowNum) ->
-                        new User(
-                                UUID.fromString(rs.getString("id")),
-                                rs.getString("firstname"),
-                                rs.getString("lastname"),
-                                rs.getString("email"),
-                                rs.getString("password"),
-                                rs.getString("description"),
-                                rs.getString("role"),
-                                new ArrayList<>(),
-                                new ArrayList<>()
-                        ));
-        return user;
+        return getUser(secteurId, select, jdbcTemplate);
     }
 
     @Override

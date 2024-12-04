@@ -1,6 +1,8 @@
 spring:
   application:
     name: trouve ton match
+  main:
+    allow-circular-references: true
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/ttm
@@ -14,3 +16,9 @@ spring:
     user: osselait
     password: postgres
     change-log: classpath:/db/changelog/db.changelog-master.sql
+
+security:
+  jwt:
+    token:
+      secret-key: 7cdbb7e18fa7ccc4cf1ded401aad9d350a66f123d38f377a58e8767fe70ee677
+      expiration-milliseconds: 604800000

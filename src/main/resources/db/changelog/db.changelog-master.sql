@@ -24,13 +24,15 @@ CREATE TABLE IF NOT EXISTS toolbox (
 
 CREATE TABLE IF NOT EXISTS secteurs (
     id varchar(36) default(gen_random_uuid()) primary key,
-    name text
+    name text,
+    id_number INT
 );
 --rollback drop table secteurs
 
 CREATE TABLE IF NOT EXISTS types (
     id varchar(36) default(gen_random_uuid()) primary key,
-    name text
+    name text,
+    id_number INT
 );
 --rollback drop table types
 
@@ -52,26 +54,26 @@ CREATE TABLE IF NOT EXISTS users_types (
 );
 --rollback drop table user_types
 
-INSERT INTO secteurs(name) VALUES('Services administratifs et soutien'),
-                                 ('Activités spécialisées, techniques et scientifiques'),
-                                 ('Agriculture, sylviculture et pêche'),
-                                 ('Arts, spectacles et activités récréatives'),
-                                 ('Commerce et réparation'),
-                                 ('Contruction_BTP'),
-                                 ('Enseignement'),
-                                 ('Hôtels, cafés et restaurant'),
-                                 ('Industrie'),
-                                 ('Information et communication'),
-                                 ('Eau, assainissement, gestion des déchets et dépollution'),
-                                 ('Electricité, gaz, vapeur d''air conditionné'),
-                                 ('Santé humaine et action sociale'),
-                                 ('Services aux entreprises'),
-                                 ('Services aux particuliers'),
-                                 ('Transport');
+INSERT INTO secteurs(name, id_number) VALUES('Services administratifs et soutien', 1),
+                                 ('Activités spécialisées, techniques et scientifiques', 2),
+                                 ('Agriculture, sylviculture et pêche', 3),
+                                 ('Arts, spectacles et activités récréatives', 4),
+                                 ('Commerce et réparation', 5),
+                                 ('Contruction_BTP', 6),
+                                 ('Enseignement', 7),
+                                 ('Hôtels, cafés et restaurants', 8),
+                                 ('Industrie', 9),
+                                 ('Information et communication', 10),
+                                 ('Eau, assainissement, gestion des déchets et dépollution', 11),
+                                 ('Electricité, gaz, vapeur d''air conditionné', 12),
+                                 ('Santé humaine et action sociale', 13),
+                                 ('Services aux entreprises', 14),
+                                 ('Services aux particuliers', 15),
+                                 ('Transport', 16);
 
-INSERT INTO types(name) VALUES ('Ressources humaines'),
-                               ('Finance et comptabilité'),
-                               ('Juridique'),
-                               ('Informatique'),
-                               ('Commercial et communication');
+INSERT INTO types(name, id_number) VALUES ('Ressources humaines', 1),
+                               ('Finance et comptabilité', 2),
+                               ('Juridique', 3),
+                               ('Informatique', 4),
+                               ('Commercial et communication', 5);
 

@@ -23,6 +23,7 @@ public class UserMapperDto {
     }
 
     public UserDto mapUserToUserDto(User user) {
+
         List<SecteursActivitesDto> secteurs = secteursActivitesRepository.findSecteursByUserId(user.userId()).stream().map(
                 SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto
         ).toList();
