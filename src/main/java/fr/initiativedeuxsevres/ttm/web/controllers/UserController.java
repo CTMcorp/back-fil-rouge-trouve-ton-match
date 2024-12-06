@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final UserMapperDto userMapper;
-    /*private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
-    private final SecurityContextHolderStrategy securityContextHolderStrategy;*/
 
     public UserController(UserService userService, UserMapperDto userMapper) {
         this.userService = userService;
@@ -37,7 +34,7 @@ public class UserController {
         return userMapper.mapUserToUserDto(user);
     }
 
-    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login")
     public ResponseEntity<JwtAuthResponse> logIn(@RequestBody LoginRequestDto loginRequestDto) {
         // authentifie le user et génère un token
         String token = userService.logIn(loginRequestDto);
@@ -48,21 +45,3 @@ public class UserController {
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 }
-
-
-    /*public Void login(@RequestBody LoginRequestDto loginRequest, HttpServletRequest request, HttpServletResponse response) {
-        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
-                loginRequest.email(),
-                loginRequest.password());
-
-        Authentication authentication= authenticationManager.authenticate(token);
-
-        if (authentication.isAuthenticated()) {
-            SecurityContext context = securityContextHolderStrategy.createEmptyContext();
-            context.setAuthentication(authentication);
-            securityContextRepository.saveContext(context, request, response);
-        } else {
-            throw new BadCredentialsException("Invalid credentials");
-        }
-        return null;
-    }*/

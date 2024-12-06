@@ -1,6 +1,5 @@
 package fr.initiativedeuxsevres.ttm.web.mapper;
 
-import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesRepository;
 import fr.initiativedeuxsevres.ttm.domain.repositories.TypesAccompagnementRepository;
