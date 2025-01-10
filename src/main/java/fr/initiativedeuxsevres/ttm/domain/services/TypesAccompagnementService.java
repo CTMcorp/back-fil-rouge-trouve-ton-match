@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface TypesAccompagnementService {
 
-    User addUserType(UUID userId, UUID typeId);
+    User addUserType(UUID userId, int typeId);
 }

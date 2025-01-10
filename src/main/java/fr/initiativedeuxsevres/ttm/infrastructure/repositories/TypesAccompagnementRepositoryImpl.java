@@ -19,17 +19,17 @@ public class TypesAccompagnementRepositoryImpl implements TypesAccompagnementRep
     }
 
     @Override
-    public User addUserType(UUID userId, UUID typeId) {
-        String insert = "INSERT INTO users_types (users_id, types_id) VALUES (?, ?)";
+    public User addUserType(UUID userId, int typeId) {
+        String insert = "INSERT INTO users_types (users_id, types_id_number) VALUES (?, ?)";
         jdbcTemplate.update(insert, userId, typeId);
 
-        String select = "SELECT users.*, types.name FROM users JOIN users_types us ON users.id = us.users_id JOIN types ON types.id = us.types_id WHERE types.id = ?";
+        String select = "SELECT users.*, types.name FROM users JOIN users_types us ON users.id = us.users_id JOIN types ON types.id_number = us.types_id_number WHERE types.id_number = ?";
         return getUser(typeId, select, jdbcTemplate);
     }
 
-    static User getUser(UUID typeId, String select, JdbcTemplate jdbcTemplate) {
+    static User getUser(int typeId, String select, JdbcTemplate jdbcTemplate) {
         return jdbcTemplate.queryForObject(select,
-                new Object[]{typeId.toString()}, (rs, rowNum) ->
+                new Object[]{typeId}, (rs, rowNum) ->
                         new User(
                                 UUID.fromString(rs.getString("id")),
                                 rs.getString("firstname"),
@@ -45,7 +45,7 @@ public class TypesAccompagnementRepositoryImpl implements TypesAccompagnementRep
 
     @Override
     public List<TypesAccompagnement> findTypesByUserId(UUID userId) {
-        String query = "SELECT types.name FROM types JOIN users_types ut ON types.id = ut.types_id WHERE ut.users_id = ?";
+        String query = "SELECT types.name FROM types JOIN users_types ut ON types.id_number = ut.types_id_number WHERE ut.users_id = ?";
         return jdbcTemplate.query(query, new Object[]{userId.toString()}, (rs, rowNum) -> {
             String typeName = rs.getString("name").toUpperCase().replace(" ", "_");
             return TypesAccompagnement.valueOf(typeName);

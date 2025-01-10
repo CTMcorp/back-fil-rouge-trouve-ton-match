@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface TypesAccompagnementRepository {
 
-    User addUserType(UUID userId, UUID typeId);
+    User addUserType(UUID userId, int typeId);
 
     List<TypesAccompagnement> findTypesByUserId(UUID userId);
 }

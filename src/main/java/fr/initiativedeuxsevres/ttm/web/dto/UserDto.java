@@ -8,7 +8,6 @@ public record UserDto(
         String firstname,
         String lastname,
         String email,
-        String password,
         String description,
         String role,
         List<SecteursActivitesDto> secteursActivites,

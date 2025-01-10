@@ -8,7 +8,9 @@ import java.util.UUID;
 
 public interface SecteursActivitesRepository {
 
-    User addUserSecteur(UUID userId, UUID secteurId);
+    User addUserSecteur(UUID userId, int idNumber);
 
     List<SecteursActivites> findSecteursByUserId(UUID userId);
+
+    List<SecteursActivites> findAllSecteurs();
 }

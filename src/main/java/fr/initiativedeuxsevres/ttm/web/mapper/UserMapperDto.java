@@ -36,7 +36,6 @@ public class UserMapperDto {
                 user.firstname(),
                 user.lastname(),
                 user.email(),
-                user.password(),
                 user.description(),
                 user.role(),
                 secteurs,

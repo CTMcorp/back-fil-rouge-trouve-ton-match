@@ -40,7 +40,7 @@ public class UserController {
         String token = userService.logIn(loginRequestDto);
 
         // crée une réponse contenant le token
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse(token, "Bearer");
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse(token);
         // return la réponse avec statut 200
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }

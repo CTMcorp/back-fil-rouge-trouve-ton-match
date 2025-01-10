@@ -1,5 +1,6 @@
 package fr.initiativedeuxsevres.ttm.config;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,14 +30,12 @@ public class JwtTokenProvider {
         Date expireDate = new Date(currentDate.getTime() + jwtExpiration);
 
         // construction du token
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .subject(username) // définit le sujet du token
                 .issuedAt(new Date()) // date d'émission du token
                 .expiration(expireDate) // date d'expiration
                 .signWith(key()) // signe le token avec la secret key
                 .compact(); // compacte le token en une chaine
-
-        return token;
     }
 
     // méthode pour générer la secret key pour signer le token
@@ -50,16 +49,21 @@ public class JwtTokenProvider {
         return Jwts.parser() // crée un parser
                 .verifyWith(key())
                 .build() // construit le parser
-                .parseSignedClaims(token) // parse les claims
+                .parseSignedClaims(token)// parse les claims
                 .getPayload() // recup le payload du token
                 .getSubject(); // recup le username
     }
 
     public boolean validateToken(String token) {
-        Jwts.parser()
-                .verifyWith(key())
-                .build()
-                .parse(token);
-        return true;
+        try {
+            Jwts.parser()
+                    .verifyWith(key())
+                    .build()
+                    .parse(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+
     }
 }

@@ -5,6 +5,8 @@ import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
 import fr.initiativedeuxsevres.ttm.domain.services.UserService;
 import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
+import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
+import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,22 +23,29 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserMapperDto userMapperDto;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, @Lazy AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, @Lazy AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserMapperDto userMapperDto) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userMapperDto = userMapperDto;
     }
 
     @Override
     public User register(String firstname, String lastname, String email, String password, String role) {
-        if (role == null) {
-            throw new IllegalArgumentException("Role cannot be null");
+        try {
+            if (role == null) {
+                throw new IllegalArgumentException("Role cannot be null");
+            }
+            String encodedPassword = passwordEncoder.encode(password);
+            return userRepository.register(firstname, lastname, email, encodedPassword, role);
+        } catch (Exception e) {
+            throw new RuntimeException("Registration failed", e);
         }
-        String encodedPassword = passwordEncoder.encode(password);
-        return userRepository.register(firstname, lastname, email, encodedPassword, role);
+
     }
 
     @Override

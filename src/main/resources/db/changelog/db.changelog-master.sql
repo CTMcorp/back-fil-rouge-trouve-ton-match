@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
     email text UNIQUE,
     password text,
     description text,
-    role varchar(10),
+    role varchar(14),
     photo text
 );
 --rollback drop table users
@@ -25,32 +25,32 @@ CREATE TABLE IF NOT EXISTS toolbox (
 CREATE TABLE IF NOT EXISTS secteurs (
     id varchar(36) default(gen_random_uuid()) primary key,
     name text,
-    id_number INT
+    id_number INT UNIQUE
 );
 --rollback drop table secteurs
 
 CREATE TABLE IF NOT EXISTS types (
     id varchar(36) default(gen_random_uuid()) primary key,
     name text,
-    id_number INT
+    id_number INT UNIQUE
 );
 --rollback drop table types
 
 CREATE TABLE IF NOT EXISTS users_secteurs (
     users_id varchar(36),
-    secteurs_id varchar(36),
-    PRIMARY KEY (users_id, secteurs_id),
+    secteurs_id_number INT,
+    PRIMARY KEY (users_id, secteurs_id_number),
     CONSTRAINT fk_users_id FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_secteurs_id FOREIGN KEY (secteurs_id) REFERENCES secteurs(id) ON DELETE CASCADE
+    CONSTRAINT fk_secteurs_id_number FOREIGN KEY (secteurs_id_number) REFERENCES secteurs(id_number) ON DELETE CASCADE
 );
 --rollback drop table user_secteurs
 
 CREATE TABLE IF NOT EXISTS users_types (
     users_id varchar(36),
-    types_id varchar(36),
-    PRIMARY KEY (users_id, types_id),
+    types_id_number INT,
+    PRIMARY KEY (users_id, types_id_number),
     CONSTRAINT fk_users_id FOREIGN KEY (users_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_types_id FOREIGN KEY (types_id) REFERENCES types(id) ON DELETE CASCADE
+    CONSTRAINT fk_types_id_number FOREIGN KEY (types_id_number) REFERENCES types(id_number) ON DELETE CASCADE
 );
 --rollback drop table user_types
 

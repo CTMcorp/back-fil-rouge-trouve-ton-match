@@ -1,7 +1,6 @@
 package fr.initiativedeuxsevres.ttm.infrastructure.repositories;
 
 import fr.initiativedeuxsevres.ttm.domain.models.User;
-import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesRepository;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,11 +12,9 @@ import java.util.UUID;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final SecteursActivitesRepository secteursActivitesRepository;
 
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate, SecteursActivitesRepository secteursActivitesRepository) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.secteursActivitesRepository = secteursActivitesRepository;
     }
 
 
