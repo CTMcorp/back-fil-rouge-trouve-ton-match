@@ -6,14 +6,14 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/ttm
-    username: osselait
+    username: postgres
     password: postgres
   liquibase:
     driver-class-name: org.postgresql.Driver
     drop-first: false
     enabled: true
     url: jdbc:postgresql://localhost:5432/ttm
-    user: osselait
+    user: postgres
     password: postgres
     change-log: classpath:/db/changelog/db.changelog-master.sql
 
@@ -22,8 +22,3 @@ security:
     token:
       secret-key: 7cdbb7e18fa7ccc4cf1ded401aad9d350a66f123d38f377a58e8767fe70ee677
       expiration-milliseconds: 604800000
-debug: true
-logging:
-  level:
-    org:
-      springframework: DEBUG
