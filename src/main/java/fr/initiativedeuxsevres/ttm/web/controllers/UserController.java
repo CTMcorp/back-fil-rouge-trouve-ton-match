@@ -52,9 +52,6 @@ public class UserController {
         String id = authentication.getName();
         // Charge les détails de l'utilisateur
         User user = userService.getUserById(id);
-        System.out.println(id);
-        // Mappe l'utilisateur vers un DTO
-        //UserDto userDto = userMapper.mapUserToUserDto(user);
         // Retourne les informations de l'utilisateur
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

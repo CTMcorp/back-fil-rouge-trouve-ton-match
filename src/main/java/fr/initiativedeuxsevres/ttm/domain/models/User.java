@@ -30,11 +30,8 @@ public record User(
     }
 
     @Override
+    // Dois être nommé getUserName a cause d'UserDetails security
     public String getUsername() {
-        return getUserId();
-    }
-
-    public String getUserId() {
         return userId.toString();
     }
 }
