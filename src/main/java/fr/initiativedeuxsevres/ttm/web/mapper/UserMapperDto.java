@@ -1,5 +1,6 @@
 package fr.initiativedeuxsevres.ttm.web.mapper;
 
+import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesRepository;
 import fr.initiativedeuxsevres.ttm.domain.repositories.TypesAccompagnementRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapperDto {
@@ -23,9 +25,10 @@ public class UserMapperDto {
 
     public UserDto mapUserToUserDto(User user) {
 
-        List<SecteursActivitesDto> secteurs = secteursActivitesRepository.findSecteursByUserId(user.userId()).stream().map(
-                SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto
-        ).toList();
+        List<SecteursActivitesDto> secteurs = user.secteursActivites().stream()
+                .map((secteur) -> SecteursActivites.mapStringToName(secteur.name))
+                .map(SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto)
+                .collect(Collectors.toList());
 
         List<TypesAccompagnementDto> types = typesAccompagnementRepository.findTypesByUserId(user.userId()).stream().map(
                 TypesAccompagnementDto::mapTypesAccompagnementToTypesAccompagnementDto

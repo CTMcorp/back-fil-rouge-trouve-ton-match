@@ -38,9 +38,9 @@ public class SecteursActivitesRepositoryImpl implements SecteursActivitesReposit
         });
     }
 
-    public List<SecteursActivites> findAllSecteurs() {
+    public List<SecteursActivites> findAllSecteurs(UUID userId) {
         String query = "SELECT name FROM secteurs";
-        return jdbcTemplate.query(query, (rs, rowNum) -> {
+        return jdbcTemplate.query(query,  new Object[]{userId.toString()},(rs, rowNum) -> {
             String secteurName = rs.getString("name");
             return Arrays.stream(SecteursActivites.values()).filter(enumVal -> enumVal.name.equals(secteurName)).findAny().orElse(null);
         });

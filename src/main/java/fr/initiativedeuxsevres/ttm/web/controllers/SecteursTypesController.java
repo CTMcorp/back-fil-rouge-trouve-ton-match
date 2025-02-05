@@ -9,11 +9,15 @@ import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -54,15 +58,39 @@ public class SecteursTypesController {
         return secteursList.stream().map(SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto).collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/me/allsecteurs", produces = MediaType.APPLICATION_JSON_VALUE)
+    // TODO : ne fonctionne pas sur la route /ttm/... car ne récupère pas le user authentifié.
+    //  Mais sur une route genre /secteurs/all c'est ok si pas besoin d'être authentifié
+    @GetMapping(value = "/allsecteurs", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SecteursActivitesDto> allSecteurs(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         if (!authentication.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not authenticated");
         }
-        List<SecteursActivites> secteursList = secteursActivitesService.findAllSecteurs();
-        return secteursList.stream().map(SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto).collect(Collectors.toList());
+
+        List<SecteursActivites> secteursList = secteursActivitesService.findAllSecteurs(user.userId());
+
+        if (secteursList == null) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Secteurs list is null");
+        }
+
+        return secteursList.stream()
+                .filter(Objects::nonNull) // Filtrer les éléments null
+                .map(SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto)
+                .collect(Collectors.toList());
     }
+
+    /*
+    // FIXME : méthode de test pour voir si le user est bien récupéré et ce n'est pas le cas.
+        Essaie dans le userController et ne fonctionne pas non plus
+    @GetMapping("/test")
+    public ResponseEntity<String> test(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = (User) authentication.getPrincipal();
+            return ResponseEntity.ok("Authenticated user: " + user.getUsername());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
+        }
+    }*/
 
     @PostMapping(value = "/me/types/{typeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto updateTypes(@PathVariable int typeId, Authentication authentication) {

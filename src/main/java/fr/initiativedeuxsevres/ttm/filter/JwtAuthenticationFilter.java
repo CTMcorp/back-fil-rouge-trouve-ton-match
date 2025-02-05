@@ -46,15 +46,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // charge details du user
             UserDetails userDetails = userService.loadUserByUsername(username);
             // création d'un objet d'authentication
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
-            // ajoute des détails supplémentaires à l'authentication
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            // définit l'auth dans le contexte de sécurité
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            if (userDetails != null) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                // ajoute des détails supplémentaires à l'authentication
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                // définit l'auth dans le contexte de sécurité
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
         }
         // continue le filtrage de la requete
         filterChain.doFilter(request, response);

@@ -3,29 +3,27 @@ package fr.initiativedeuxsevres.ttm.web.dto;
 import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 
 public enum SecteursActivitesDto {
-    SERVICES_ADMINISTRATIFS_SOUTIEN("Services administratifs et soutien"),
-    ACTIVITES_TECHNIQUES_SCIENTIFIQUES("Activités spécialisées, techniques et scientifiques"),
-    AGRICULTURE("Agriculture, sylviculture et pêche"),
-    ARTS_SPECTACLES("Arts, spectacles et activités récréatives"),
-    COMMERCE("Commerce et réparation"),
-    CONSTRUCTION_BTP("Contruction_BTP"),
-    ENSEIGNEMENT("Enseignement"),
-    HOTELS_RESTAURANTS("Hôtels, cafés et restaurant"),
-    INDUSTRIE("Industrie"),
-    INFORMATION_COMMUNICATION("Information et communication"),
-    EAU_ASSAINISSEMENT_DECHETS("Eau, assainissement, gestion des déchets et dépollution"),
-    ELECTRICITE_GAZ("Electricité, gaz, vapeur d'air conditionné"),
-    SANTE_ACTION_SOCIALE("Santé humaine et action sociale"),
-    SERVICES_AUX_ENTREPRISES("Services aux entreprises"),
-    SERVICES_AUX_PARTICULIERS("Services aux particuliers"),
-    TRANSPORTS("Transport");
-
-    public final String name;
-    SecteursActivitesDto(String name) {
-        this.name = name;
-    }
+    SERVICES_ADMINISTRATIFS_SOUTIEN,
+    ACTIVITES_TECHNIQUES_SCIENTIFIQUES,
+    AGRICULTURE,
+    ARTS_SPECTACLES,
+    COMMERCE,
+    CONSTRUCTION_BTP,
+    ENSEIGNEMENT,
+    HOTELS_RESTAURANTS,
+    INDUSTRIE,
+    INFORMATION_COMMUNICATION,
+    EAU_ASSAINISSEMENT_DECHETS,
+    ELECTRICITE_GAZ,
+    SANTE_ACTION_SOCIALE,
+    SERVICES_AUX_ENTREPRISES,
+    SERVICES_AUX_PARTICULIERS,
+    TRANSPORTS;
 
     public static SecteursActivitesDto mapSecteursActivitesToSecteursActivitesDto(SecteursActivites secteursActivites) {
+        if (secteursActivites == null) {
+            throw new IllegalArgumentException("SecteursActivites cannot be null");
+        }
         return switch (secteursActivites) {
             case SERVICES_ADMINISTRATIFS_SOUTIEN -> SecteursActivitesDto.SERVICES_ADMINISTRATIFS_SOUTIEN;
             case ACTIVITES_TECHNIQUES_SCIENTIFIQUES -> SecteursActivitesDto.ACTIVITES_TECHNIQUES_SCIENTIFIQUES;
@@ -43,6 +41,7 @@ public enum SecteursActivitesDto {
             case SERVICES_AUX_ENTREPRISES -> SecteursActivitesDto.SERVICES_AUX_ENTREPRISES;
             case SERVICES_AUX_PARTICULIERS -> SecteursActivitesDto.SERVICES_AUX_PARTICULIERS;
             case TRANSPORTS -> SecteursActivitesDto.TRANSPORTS;
+            default -> null;
         };
     }
 }
