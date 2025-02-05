@@ -31,6 +31,10 @@ public record User(
 
     @Override
     public String getUsername() {
-        return firstname + lastname;
+        return getUserId();
+    }
+
+    public String getUserId() {
+        return userId.toString();
     }
 }

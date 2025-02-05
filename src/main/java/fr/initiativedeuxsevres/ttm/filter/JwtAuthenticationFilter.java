@@ -42,9 +42,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // si le token est présent et valide
         if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
             // recup username à partir du token
-            String username = jwtTokenProvider.getUsername(token);
+            String userId = jwtTokenProvider.getUsername(token);
             // charge details du user
-            UserDetails userDetails = userService.loadUserByUsername(username);
+            UserDetails userDetails = userService.loadUserByUsername(userId);
             // création d'un objet d'authentication
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails,

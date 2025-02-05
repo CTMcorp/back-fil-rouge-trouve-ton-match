@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 
+@SuppressWarnings("ALL")
 @Component
 public class JwtTokenProvider {
     // injecte le secret key
@@ -23,7 +24,7 @@ public class JwtTokenProvider {
     // méthode pour générer un token pour un user authentifié
     public String generateToken(Authentication authentication) {
         // récup le username
-        String username = authentication.getName();
+        String userId = authentication.getName();
 
         Date currentDate = new Date();
         // date d'expiration du token
@@ -31,7 +32,7 @@ public class JwtTokenProvider {
 
         // construction du token
         return Jwts.builder()
-                .subject(username) // définit le sujet du token
+                .subject(userId) // définit le sujet du token
                 .issuedAt(new Date()) // date d'émission du token
                 .expiration(expireDate) // date d'expiration
                 .signWith(key()) // signe le token avec la secret key

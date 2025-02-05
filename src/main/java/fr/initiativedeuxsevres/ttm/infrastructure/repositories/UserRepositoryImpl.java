@@ -17,7 +17,6 @@ public class UserRepositoryImpl implements UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     //TODO : faire que register return un Void
     @Override
     public User register(String firstname, String lastname, String email, String password, String role) {
