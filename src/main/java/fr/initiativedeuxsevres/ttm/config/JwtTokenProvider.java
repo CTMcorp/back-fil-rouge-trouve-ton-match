@@ -23,7 +23,7 @@ public class JwtTokenProvider {
 
     // méthode pour générer un token pour un user authentifié
     public String generateToken(Authentication authentication) {
-        // récup le username
+
         String userId = authentication.getName();
 
         Date currentDate = new Date();

@@ -9,6 +9,7 @@ import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -43,5 +44,17 @@ public class UserController {
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse(token);
         // return la réponse avec statut 200
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE) // réponse format JSON
+    public ResponseEntity<UserDto> getUserProfile(Authentication authentication) {
+        // Récupère l'ID utilisateur à partir de l'authentification
+        String userId = authentication.getName();
+        // Charge les détails de l'utilisateur
+        User user = userService.loadUserByUsername(userId);
+        // Mappe l'utilisateur vers un DTO
+        UserDto userDto = userMapper.mapUserToUserDto(user);
+        // Retourne les informations de l'utilisateur
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 }
