@@ -22,7 +22,7 @@ public class JwtTokenProvider {
     private long jwtExpiration;
 
     // méthode pour générer un token pour un user authentifié
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, String email) {
 
         String userId = authentication.getName();
 
@@ -32,7 +32,7 @@ public class JwtTokenProvider {
 
         // construction du token
         return Jwts.builder()
-                .subject(userId) // définit le sujet du token
+                .subject(email) // définit le sujet du token
                 .issuedAt(new Date()) // date d'émission du token
                 .expiration(expireDate) // date d'expiration
                 .signWith(key()) // signe le token avec la secret key

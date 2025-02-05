@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -54,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById (String id) throws UsernameNotFoundException {
+        return userRepository.getUserById(id);
+    }
+
+    @Override
     public String logIn(LoginRequestDto loginRequestDto) {
         // authentifie le user avec email et password
         Authentication authentication = authenticationManager.authenticate(
@@ -65,6 +72,6 @@ public class UserServiceImpl implements UserService {
         // définit l'auth dans le contexte de sécurité
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // génère token pour le user authentifié
-        return jwtTokenProvider.generateToken(authentication);
+        return jwtTokenProvider.generateToken(authentication, loginRequestDto.email());
     }
 }

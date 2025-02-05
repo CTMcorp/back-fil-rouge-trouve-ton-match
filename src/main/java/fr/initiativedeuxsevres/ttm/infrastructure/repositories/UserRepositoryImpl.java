@@ -47,4 +47,25 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return users.get(0);
     }
+
+    @Override
+    public User getUserById (String id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+
+        List<User> users = jdbcTemplate.query(query, new Object[]{id}, (rs, rowNum) -> new User(
+                UUID.fromString(rs.getString("id")),
+                rs.getString("firstname"),
+                rs.getString("lastname"),
+                rs.getString("email"),
+                rs.getString("password"),
+                rs.getString("description"),
+                rs.getString("role"),
+                new ArrayList<>(),
+                new ArrayList<>()
+        ));
+        if(users.isEmpty()) {
+            return null;
+        }
+        return users.get(0);
+    }
 }

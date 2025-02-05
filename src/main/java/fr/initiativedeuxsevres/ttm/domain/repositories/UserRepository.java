@@ -6,4 +6,6 @@ public interface UserRepository {
     User register(String firstname, String lastname, String email, String password, String role);
 
     User logIn(String email);
+
+    User getUserById(String id);
 }

@@ -47,14 +47,15 @@ public class UserController {
     }
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE) // réponse format JSON
-    public ResponseEntity<UserDto> getUserProfile(Authentication authentication) {
+    public ResponseEntity<User> getUserProfile(Authentication authentication) {
         // Récupère l'ID utilisateur à partir de l'authentification
-        String userId = authentication.getName();
+        String id = authentication.getName();
         // Charge les détails de l'utilisateur
-        User user = userService.loadUserByUsername(userId);
+        User user = userService.getUserById(id);
+        System.out.println(id);
         // Mappe l'utilisateur vers un DTO
-        UserDto userDto = userMapper.mapUserToUserDto(user);
+        //UserDto userDto = userMapper.mapUserToUserDto(user);
         // Retourne les informations de l'utilisateur
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

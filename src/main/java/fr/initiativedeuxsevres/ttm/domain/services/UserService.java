@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
     User loadUserByUsername(String email);
 
     String logIn(LoginRequestDto loginRequestDto);
+
+    User getUserById(String id);
 }
