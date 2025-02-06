@@ -1,11 +1,10 @@
 package fr.initiativedeuxsevres.ttm.domain.services.servicesimpl;
 
-import fr.initiativedeuxsevres.ttm.config.JwtTokenProvider;
+import fr.initiativedeuxsevres.ttm.config.JwtService;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.UserRepository;
 import fr.initiativedeuxsevres.ttm.domain.services.UserService;
-import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
-import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
+import fr.initiativedeuxsevres.ttm.web.dto.LoginDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -22,15 +21,15 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtService jwtService;
     private final UserMapperDto userMapperDto;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, @Lazy AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserMapperDto userMapperDto) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, @Lazy AuthenticationManager authenticationManager, @Lazy JwtService jwtService, UserMapperDto userMapperDto) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtService = jwtService;
         this.userMapperDto = userMapperDto;
     }
 
@@ -54,17 +53,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String logIn(LoginRequestDto loginRequestDto) {
+    public String logIn(LoginDto loginDto) {
+        User user = userRepository.logIn(loginDto.email());
         // authentifie le user avec email et password
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.email(),
-                        loginRequestDto.password()
+                        loginDto.email(),
+                        loginDto.password()
                 )
         );
         // définit l'auth dans le contexte de sécurité
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // génère token pour le user authentifié
-        return jwtTokenProvider.generateToken(authentication);
+        return jwtService.generateToken(user);
     }
 }

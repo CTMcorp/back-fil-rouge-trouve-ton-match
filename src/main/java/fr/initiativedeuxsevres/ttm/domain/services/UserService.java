@@ -1,6 +1,7 @@
 package fr.initiativedeuxsevres.ttm.domain.services;
 
 import fr.initiativedeuxsevres.ttm.domain.models.User;
+import fr.initiativedeuxsevres.ttm.web.dto.LoginDto;
 import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -9,5 +10,5 @@ public interface UserService extends UserDetailsService {
 
     User loadUserByUsername(String email);
 
-    String logIn(LoginRequestDto loginRequestDto);
+    String logIn(LoginDto loginDto);
 }

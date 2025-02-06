@@ -3,6 +3,7 @@ package fr.initiativedeuxsevres.ttm.web.controllers;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.services.UserService;
 import fr.initiativedeuxsevres.ttm.web.dto.JwtAuthResponse;
+import fr.initiativedeuxsevres.ttm.web.dto.LoginDto;
 import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
@@ -35,9 +36,9 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<JwtAuthResponse> logIn(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<JwtAuthResponse> logIn(@RequestBody LoginDto loginDto) {
         // authentifie le user et génère un token
-        String token = userService.logIn(loginRequestDto);
+        String token = userService.logIn(loginDto);
 
         // crée une réponse contenant le token
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse(token);

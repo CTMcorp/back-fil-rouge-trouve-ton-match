@@ -3,6 +3,7 @@ spring:
     name: trouve ton match
   main:
     allow-circular-references: true
+    lazy-initialization: true
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/ttm
@@ -15,10 +16,14 @@ spring:
     url: jdbc:postgresql://localhost:5432/ttm
     user: postgres
     password: postgres
-    change-log: classpath:/db/changelog/db.changelog-master.sql
+    change-log: classpath:/db/changelog/db.changelog-master.xml
 
 security:
   jwt:
     token:
       secret-key: 7cdbb7e18fa7ccc4cf1ded401aad9d350a66f123d38f377a58e8767fe70ee677
-      expiration-milliseconds: 604800000
+debug: true
+logging:
+  level:
+    org:
+      springframework: debug

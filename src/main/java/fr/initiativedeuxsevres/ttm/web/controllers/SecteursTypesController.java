@@ -7,10 +7,13 @@ import fr.initiativedeuxsevres.ttm.domain.services.TypesAccompagnementService;
 import fr.initiativedeuxsevres.ttm.web.dto.SecteursActivitesDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/ttm")
 public class SecteursTypesController {
@@ -60,9 +64,10 @@ public class SecteursTypesController {
 
     // TODO : ne fonctionne pas sur la route /ttm/... car ne récupère pas le user authentifié.
     //  Mais sur une route genre /secteurs/all c'est ok si pas besoin d'être authentifié
-    @GetMapping(value = "/allsecteurs", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SecteursActivitesDto> allSecteurs(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
+        log.info(String.valueOf(user.userId()));
         if (!authentication.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not authenticated");
         }

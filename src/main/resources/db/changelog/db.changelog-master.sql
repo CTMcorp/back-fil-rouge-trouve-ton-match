@@ -76,4 +76,3 @@ INSERT INTO types(name, id_number) VALUES ('Ressources humaines', 1),
                                ('Juridique', 3),
                                ('Informatique', 4),
                                ('Commercial et communication', 5);
-

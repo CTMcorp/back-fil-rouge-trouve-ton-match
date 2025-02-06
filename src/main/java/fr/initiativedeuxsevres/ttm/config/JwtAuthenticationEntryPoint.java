@@ -1,3 +1,4 @@
+/*
 package fr.initiativedeuxsevres.ttm.config;
 
 import jakarta.servlet.ServletException;
@@ -20,3 +21,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
     }
 }
+*/
