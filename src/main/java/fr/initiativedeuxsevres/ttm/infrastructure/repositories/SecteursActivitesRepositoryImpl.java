@@ -1,5 +1,6 @@
 package fr.initiativedeuxsevres.ttm.infrastructure.repositories;
 
+import fr.initiativedeuxsevres.ttm.core.UserUtil;
 import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesRepository;
@@ -10,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static fr.initiativedeuxsevres.ttm.infrastructure.repositories.TypesAccompagnementRepositoryImpl.getUser;
 
 @Repository
 public class SecteursActivitesRepositoryImpl implements SecteursActivitesRepository {
@@ -25,8 +25,12 @@ public class SecteursActivitesRepositoryImpl implements SecteursActivitesReposit
         String insert = "INSERT INTO users_secteurs (users_id, secteurs_id_number) VALUES (?, ?)";
         jdbcTemplate.update(insert, userId, idNumber);
 
-        String select = "SELECT users.*, secteurs.name FROM users JOIN users_secteurs us ON users.id = us.users_id JOIN secteurs ON secteurs.id_number = us.secteurs_id_number WHERE secteurs.id_number = ?";
-        return getUser(idNumber, select, jdbcTemplate);
+        String select = "SELECT users.*, secteurs.name FROM users " +
+                "JOIN users_secteurs us ON users.id = us.users_id " +
+                "JOIN secteurs ON secteurs.id_number = us.secteurs_id_number " +
+                "WHERE secteurs.id_number = ?";
+        List<User> users = UserUtil.getUser(select, new Object[]{idNumber}, jdbcTemplate);
+        return users.isEmpty() ? null : users.get(0);
     }
 
     @Override

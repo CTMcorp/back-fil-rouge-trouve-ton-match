@@ -1,5 +1,6 @@
 package fr.initiativedeuxsevres.ttm.web.controllers;
 
+import fr.initiativedeuxsevres.ttm.domain.models.Role;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.services.UserService;
 import fr.initiativedeuxsevres.ttm.web.dto.JwtAuthResponse;
@@ -30,7 +31,7 @@ public class UserController {
                 loginRequest.lastname(),
                 loginRequest.email(),
                 loginRequest.password(),
-                loginRequest.role()
+                loginRequest.role().name()
         );
         return userMapper.mapUserToUserDto(user);
     }

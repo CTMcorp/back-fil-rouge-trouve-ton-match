@@ -1,6 +1,5 @@
 package fr.initiativedeuxsevres.ttm.domain.models;
 
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,13 +15,16 @@ public record User(
         String email,
         String password,
         String description,
-        String role,
+        Role role,
         List<SecteursActivites> secteursActivites,
         List<TypesAccompagnement> typesAccompagnements) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        if (role == null) {
+            throw new RuntimeException("Role is null");
+        }
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
@@ -33,5 +35,10 @@ public record User(
     @Override
     public String getUsername() {
         return firstname + lastname;
+    }
+
+    @Override
+    public Role role() {
+        return role;
     }
 }

@@ -1,12 +1,12 @@
 package fr.initiativedeuxsevres.ttm.domain.repositories;
 
 import fr.initiativedeuxsevres.ttm.domain.models.User;
-
-import javax.swing.text.html.Option;
-import java.util.Optional;
+import fr.initiativedeuxsevres.ttm.infrastructure.models.RoleInfra;
 
 public interface UserRepository {
-    User register(String firstname, String lastname, String email, String password, String role);
+    RoleInfra findRoleByName(String roleName);
+
+    User register(String firstname, String lastname, String email, String password, RoleInfra role);
 
     User logIn(String email);
 }

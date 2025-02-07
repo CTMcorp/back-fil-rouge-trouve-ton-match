@@ -4,12 +4,12 @@ import fr.initiativedeuxsevres.ttm.domain.models.SecteursActivites;
 import fr.initiativedeuxsevres.ttm.domain.models.User;
 import fr.initiativedeuxsevres.ttm.domain.repositories.SecteursActivitesRepository;
 import fr.initiativedeuxsevres.ttm.domain.repositories.TypesAccompagnementRepository;
+import fr.initiativedeuxsevres.ttm.web.dto.RoleDto;
 import fr.initiativedeuxsevres.ttm.web.dto.SecteursActivitesDto;
 import fr.initiativedeuxsevres.ttm.web.dto.TypesAccompagnementDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,7 @@ public class UserMapperDto {
     }
 
     public UserDto mapUserToUserDto(User user) {
+        RoleDto role = RoleDto.mapRoleToRoleDto(user.role());
 
         List<SecteursActivitesDto> secteurs = user.secteursActivites().stream()
                 .map((secteur) -> SecteursActivites.mapStringToName(secteur.name))
@@ -40,31 +41,8 @@ public class UserMapperDto {
                 user.lastname(),
                 user.email(),
                 user.description(),
-                user.role(),
+                role,
                 secteurs,
                 types);
     }
 }
-/*public class UserMapperDto {
-
-    public UserDto mapUserToUserDto(User user) {
-        List<SecteursActivitesDto> secteurs = Arrays.stream(SecteursActivites.values()).map(
-                SecteursActivitesDto::mapSecteursActivitesToSecteursActivitesDto
-        ).filter(Objects::nonNull).toList();
-
-        List<TypesAccompagnementDto> types = Arrays.stream(TypesAccompagnement.values()).map(
-                TypesAccompagnementDto::mapTypesAccompagnementToTypesAccompagnementDto
-        ).filter(Objects::nonNull).toList();
-
-        return new UserDto(
-                user.userId(),
-                user.firstname(),
-                user.lastname(),
-                user.email(),
-                user.password(),
-                user.description(),
-                user.role(),
-                secteurs,
-                types);
-    }
-}*/

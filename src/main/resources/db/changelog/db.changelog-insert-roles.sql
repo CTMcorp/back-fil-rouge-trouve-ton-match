@@ -2,6 +2,6 @@
 
 --changeset ttm:3
 
-INSERT INTO roles(name) VALUES ('Administrateur'),
-                               ('Parrain'),
-                               ('Porteur');
+INSERT INTO roles(name) VALUES ('ADMINISTRATEUR'),
+                               ('PARRAIN'),
+                               ('PORTEUR');
