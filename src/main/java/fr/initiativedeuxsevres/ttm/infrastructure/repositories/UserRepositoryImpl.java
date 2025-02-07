@@ -65,22 +65,4 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return users.get(0);
     }
-    /*@Override
-    public User logIn(String email) {
-        String query = "SELECT u.*, r.id AS role_id, r.name AS role_name FROM users u " +
-                                   "LEFT JOIN users_roles ur ON u.id = ur.users_id " +
-                                   "LEFT JOIN roles r ON ur.roles_id = r.id " +
-                                   "WHERE u.email = ?";
-
-        List<User> users = UserUtil.getUser(query, new Object[]{email}, jdbcTemplate);
-        if (users.isEmpty()) {
-            return null;
-        }
-        User user = users.get(0);
-        System.out.println("User role: " + user.role()); // Log de débogage
-        if (user.role() == null) {
-            throw new RuntimeException("User role is null");
-        }
-        return user;
-    }*/
 }

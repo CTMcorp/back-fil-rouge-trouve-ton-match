@@ -35,18 +35,26 @@ public class SecteursActivitesRepositoryImpl implements SecteursActivitesReposit
 
     @Override
     public List<SecteursActivites> findSecteursByUserId(UUID userId) {
-        String query = "SELECT secteurs.name FROM secteurs JOIN users_secteurs us ON secteurs.id_number = us.secteurs_id_number WHERE us.users_id = ?";
+        String query = "SELECT secteurs.name FROM secteurs " +
+                "JOIN users_secteurs us " +
+                "ON secteurs.id_number = us.secteurs_id_number " +
+                "WHERE us.users_id = ?";
         return jdbcTemplate.query(query, new Object[]{userId.toString()}, (rs, rowNum) -> {
             String secteurName = rs.getString("name");
-            return Arrays.stream(SecteursActivites.values()).filter(enumVal -> enumVal.name.equals(secteurName)).findFirst().orElse(null);
+            return Arrays.stream(SecteursActivites.values()).filter(enumVal ->
+                    enumVal.name.equals(secteurName)).findFirst().orElse(null);
         });
     }
 
-    public List<SecteursActivites> findAllSecteurs(UUID userId) {
+    @Override
+    public List<SecteursActivites> findAllSecteurs() {
         String query = "SELECT name FROM secteurs";
-        return jdbcTemplate.query(query,  new Object[]{userId.toString()},(rs, rowNum) -> {
+        return jdbcTemplate.query(query, (rs, rowNum) -> {
             String secteurName = rs.getString("name");
-            return Arrays.stream(SecteursActivites.values()).filter(enumVal -> enumVal.name.equals(secteurName)).findAny().orElse(null);
+            return Arrays.stream(SecteursActivites.values())
+                    .filter(enumVal -> enumVal.name.equals(secteurName))
+                    .findAny()
+                    .orElse(null);
         });
     }
 }

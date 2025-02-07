@@ -29,7 +29,7 @@ public class SecteursActivitesServiceImpl implements SecteursActivitesService {
 
 
     @Override
-    public List<SecteursActivites> findAllSecteurs(UUID userId) {
-        return secteursActivitesRepository.findAllSecteurs(userId);
+    public List<SecteursActivites> findAllSecteurs() {
+        return secteursActivitesRepository.findAllSecteurs();
     }
 }

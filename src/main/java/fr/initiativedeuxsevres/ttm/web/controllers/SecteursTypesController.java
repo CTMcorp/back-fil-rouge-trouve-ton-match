@@ -37,7 +37,7 @@ public class SecteursTypesController {
         this.userMapperDto = userMapperDto;
     }
 
-    @PostMapping(value = "/me/secteurs/{secteurId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/secteurs/{secteurId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto updateSecteurs(@PathVariable int secteurId, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authenticated");
@@ -51,7 +51,7 @@ public class SecteursTypesController {
         return userMapperDto.mapUserToUserDto(updateUser);
     }
 
-    @GetMapping(value = "/me/secteurs", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/secteurs", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SecteursActivitesDto> findSecteursByUserId(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         System.out.println("Authenticated user: " + user);
@@ -64,7 +64,8 @@ public class SecteursTypesController {
 
     // TODO : ne fonctionne pas sur la route /ttm/... car ne récupère pas le user authentifié.
     //  Mais sur une route genre /secteurs/all c'est ok si pas besoin d'être authentifié
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('PARRAIN', 'PORTEUR')")
+    @GetMapping(value = "/secteurs/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<SecteursActivitesDto> allSecteurs(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         log.info(String.valueOf(user.userId()));
@@ -72,7 +73,7 @@ public class SecteursTypesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not authenticated");
         }
 
-        List<SecteursActivites> secteursList = secteursActivitesService.findAllSecteurs(user.userId());
+        List<SecteursActivites> secteursList = secteursActivitesService.findAllSecteurs();
 
         if (secteursList == null) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Secteurs list is null");

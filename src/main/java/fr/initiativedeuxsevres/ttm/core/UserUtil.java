@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 public class UserUtil {
     public static List<User> getUser(String query, Object[] params, JdbcTemplate jdbcTemplate) {
         return jdbcTemplate.query(query, params, (rs, rowNum) -> {

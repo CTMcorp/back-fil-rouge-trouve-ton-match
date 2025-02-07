@@ -12,5 +12,5 @@ public interface SecteursActivitesService {
 
     List<SecteursActivites> findSecteursByUserId(UUID userId);
 
-    List<SecteursActivites> findAllSecteurs(UUID userId);
+    List<SecteursActivites> findAllSecteurs();
 }
