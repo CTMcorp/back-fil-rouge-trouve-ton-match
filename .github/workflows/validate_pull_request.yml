@@ -41,8 +41,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test report
-          path: ./build/reports/tests/
-          if-no-files-found: 'warn'
+          path: ./build/test-results/test/
+#         if-no-files-found: 'warn'
           retention-days: 1
           compression-level: 6
 
