@@ -39,7 +39,7 @@ jobs:
           SPRING_LIQUIBASE_URL: jdbc:postgresql://localhost:5432/ttm
           SPRING_LIQUIBASE_USER: postgres
           SPRING_LIQUIBASE_PASSWORD: postgres
-        run: gradle check
+        run: ./gradlew check
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -61,4 +61,4 @@ jobs:
           distribution: 'temurin'
           java-version: 21
       - name: Build with gradle
-        run: gradle build
+        run: ./gradlew build
