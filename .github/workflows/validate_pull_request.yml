@@ -33,7 +33,7 @@ jobs:
           java-version: 21
       - name: Run Spring check
         env:
-          SPRING-DATASOURCE_URL: jdbc:postgresql://db:5432/ttm
+          SPRING-DATASOURCE_URL: jdbc:postgresql://localhost:5432/ttm
           SPRING-DATASOURCE_USERNAME: postgres
           SPRING-DATASOURCE_PASSWORD: postgres
         run: gradle check
