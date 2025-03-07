@@ -33,9 +33,12 @@ jobs:
           java-version: 21
       - name: Run Spring check
         env:
-          SPRING-DATASOURCE_URL: jdbc:postgresql://localhost:5432/ttm
-          SPRING-DATASOURCE_USERNAME: postgres
-          SPRING-DATASOURCE_PASSWORD: postgres
+          SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ttm
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
+          SPRING_LIQUIBASE_URL: jdbc:postgresql://db:5432/ttm
+          SPRING_LIQUIBASE_USER: postgres
+          SPRING_LIQUIBASE_PASSWORD: postgres
         run: gradle check
       - name: Upload artifact
         uses: actions/upload-artifact@v4
