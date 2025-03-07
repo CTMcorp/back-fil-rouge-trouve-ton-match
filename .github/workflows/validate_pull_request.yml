@@ -1,0 +1,61 @@
+name : Check pull request
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+jobs:
+  check:
+    name: Validation du code
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ttm
+          POSTGRES_PASSWORD: ttm
+          POSTGRES_DB: ttm
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Run Spring check
+        env:
+          SPRING-DATASOURCE_URL: jdbc:postgresql://db:5432/ttm
+          SPRING-DATASOURCE_USERNAME: postgres
+          SPRING-DATASOURCE_PASSWORD: postgres
+        run: gradle check
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test report
+          path: ./build/test-results/test/
+          if-no-files-found: 'error'
+          retention-days: 1
+          compression-level: 6
+
+  build:
+    name: Build .jar file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: setup JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+      - name: Build with gradle
+        run: gradle build
