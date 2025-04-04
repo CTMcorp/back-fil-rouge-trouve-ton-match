@@ -16,6 +16,10 @@ spring:
     user: postgres
     password: postgres
     change-log: classpath:/db/changelog/db.changelog-master.sql
+  data:
+    mongodb:
+      database: ttm
+      uri: mongodb://localhost:27017/?replicaSet=rs0
 
 security:
   jwt:
@@ -23,6 +27,6 @@ security:
       secret-key: 7cdbb7e18fa7ccc4cf1ded401aad9d350a66f123d38f377a58e8767fe70ee677
       expiration-milliseconds: 604800000
 
-mongo:
-  url: mongodb://localhost:27017/?replicaSet=rs0
-  db: ttm
+#  mongo:
+#    url: mongodb://localhost:27017/?replicaSet=rs0
+#    db: ttm

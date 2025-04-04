@@ -25,10 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class MongoService {
-    @Value("${mongo.url")
+    @Value("${spring.data.mongodb.uri}")
     private String mongoUrl;
 
-    @Value("${mongo.db}")
+    @Value("${spring.data.mongodb.database}")
     private String mongoDb;
 
     private MongoClient client;

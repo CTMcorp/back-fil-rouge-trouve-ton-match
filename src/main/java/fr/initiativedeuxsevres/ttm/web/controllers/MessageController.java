@@ -12,8 +12,8 @@ import fr.initiativedeuxsevres.ttm.web.dto.MessageDto;
 @Controller
 public class MessageController {
 
-    private MongoService mongoService;
-    private SimpMessagingTemplate template;
+    private final MongoService mongoService;
+    private final SimpMessagingTemplate template;
 
     public MessageController (MongoService mongoService, SimpMessagingTemplate template) {
             this.mongoService = mongoService;
