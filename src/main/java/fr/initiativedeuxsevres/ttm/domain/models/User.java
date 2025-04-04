@@ -33,4 +33,9 @@ public record User(
     public String getUsername() {
         return firstname + lastname;
     }
+
+    public UUID getUserId(){
+        return userId;
+    }
+
 }
