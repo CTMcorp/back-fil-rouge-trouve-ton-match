@@ -7,7 +7,6 @@ import lombok.Data;
 @Builder
 @Data
 public class MessageDto {
-    private User user1;
     private User user2;
     private String content;
 }

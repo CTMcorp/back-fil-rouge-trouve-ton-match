@@ -1,35 +1,42 @@
 package fr.initiativedeuxsevres.ttm.web.controllers;
 
+import fr.initiativedeuxsevres.ttm.domain.models.User;
+import fr.initiativedeuxsevres.ttm.domain.services.UserService;
+import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import fr.initiativedeuxsevres.ttm.domain.services.MongoService;
 import fr.initiativedeuxsevres.ttm.web.dto.MessageDto;
 
+import java.util.UUID;
+
 @Controller
+@RequiredArgsConstructor
 public class MessageController {
 
     private final MongoService mongoService;
     private final SimpMessagingTemplate template;
+    private final UserService userService;
 
-    public MessageController (MongoService mongoService, SimpMessagingTemplate template) {
-            this.mongoService = mongoService;
-            this.template = template;
+@MessageMapping("/requestMessages/{conversationId}")
+    public void openMessagePage(Authentication auth, @PathParam("conversationId") String conversationId){
+
+    if (auth == null) {
+        throw new RuntimeException("Authentication is null");
     }
 
-    // Ecoute les messages publiés sur l'url
-//    @MessageMapping("/broadcast")
-//    @SendTo("/topic/reply")
-//    public String broadcastMessage(@Payload String message) {
-//        return "You have received a message: " + message;
-//    }
+    User user = (User) auth.getPrincipal();
 
-@MessageMapping("/requestMessages")
-    public void openMessagePage(){
-        var messages = mongoService.getMessagesForConversations("1", "2");
+    User conversation = userService.findById(UUID.fromString(conversationId)).orElseThrow(() -> new RuntimeException(("Conversation not found")));
+
+    var messages = mongoService.getMessagesForConversations(user, conversation);
         template.convertAndSend("/getMessages", messages);
 
     mongoService.listenForNewMessages("1","2")
@@ -50,11 +57,12 @@ public class MessageController {
             });
     }
 
-    @MessageMapping("/send")
-    public void sendMessage(MessageDto message) throws Exception {
-        mongoService.insertMessage(message.getUser1(), message.getUser2(), message.getContent());
+    @MessageMapping("/send/{conversationId}")
+    public void sendMessage(String message, Authentication auth, @PathParam("conversationId") UUID conversationId) throws Exception {
+        User user = (User) auth.getPrincipal();
+
+        User conversation = userService.findById(conversationId).orElseThrow(() -> new RuntimeException(("Conversation not found")));
+
+        mongoService.insertMessage(user, conversation, message);
     }
-
-
-
 }

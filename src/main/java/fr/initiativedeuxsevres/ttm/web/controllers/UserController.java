@@ -6,11 +6,13 @@ import fr.initiativedeuxsevres.ttm.web.dto.JwtAuthResponse;
 import fr.initiativedeuxsevres.ttm.web.dto.LoginRequestDto;
 import fr.initiativedeuxsevres.ttm.web.dto.UserDto;
 import fr.initiativedeuxsevres.ttm.web.mapper.UserMapperDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 public class UserController {
@@ -38,6 +40,7 @@ public class UserController {
     public ResponseEntity<JwtAuthResponse> logIn(@RequestBody LoginRequestDto loginRequestDto) {
         // authentifie le user et génère un token
         String token = userService.logIn(loginRequestDto);
+        log.info("token: {}", token);
 
         // crée une réponse contenant le token
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse(token);

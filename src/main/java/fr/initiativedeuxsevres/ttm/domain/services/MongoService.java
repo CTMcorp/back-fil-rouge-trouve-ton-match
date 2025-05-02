@@ -51,12 +51,12 @@ public class MongoService {
                 .getInsertedId();
     }
 
-    public MongoIterable<Document> getMessagesForConversations(String user1, String user2) {
+    public MongoIterable<Document> getMessagesForConversations(User user1, User user2) {
         return messageCollection.aggregate(Arrays.asList(
                 Aggregates.match(
                         Filters.and(
-                                Filters.in("sender", user1, user2),
-                                Filters.in("dest", user1, user2)))))
+                                Filters.in("sender", user1.getUserId(), user2.getUserId()),
+                                Filters.in("dest", user1.getUserId(), user2.getUserId())))))
                 .map(element -> element);
     }
 
