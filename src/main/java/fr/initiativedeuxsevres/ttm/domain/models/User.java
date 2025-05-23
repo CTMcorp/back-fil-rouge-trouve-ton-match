@@ -1,6 +1,5 @@
 package fr.initiativedeuxsevres.ttm.domain.models;
 
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -31,6 +30,11 @@ public record User(
 
     @Override
     public String getUsername() {
-        return firstname + lastname;
+        return email;
     }
+
+    public UUID getUserId(){
+        return userId;
+    }
+
 }

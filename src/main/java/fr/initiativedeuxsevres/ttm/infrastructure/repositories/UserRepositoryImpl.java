@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -47,5 +48,23 @@ public class UserRepositoryImpl implements UserRepository {
             return null;
         }
         return users.get(0);
+    }
+
+    @Override
+    public Optional<User> findById(UUID userId) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(query,
+                new Object[]{userId}, (rs, rowNum) ->
+                        new User(
+                                UUID.fromString(rs.getString("id")),
+                                rs.getString("firstname"),
+                                rs.getString("lastname"),
+                                rs.getString("email"),
+                                rs.getString("password"),
+                                rs.getString("description"),
+                                rs.getString("role"),
+                                new ArrayList<>(),
+                                new ArrayList<>()
+                        )));
     }
 }

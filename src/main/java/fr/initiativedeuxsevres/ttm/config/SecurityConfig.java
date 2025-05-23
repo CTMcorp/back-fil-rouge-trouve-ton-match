@@ -52,6 +52,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("https://jiangxy.github.io");
         configuration.addAllowedHeader("");
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
@@ -91,21 +92,21 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests((requests) ->
                         // nécessite d'être authentifié
-                        requests.requestMatchers("/ttm/**").authenticated()
+                        requests.requestMatchers("/ttm/**", "/ttm/me/messagerie", "/ttm/me/profil").authenticated()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/auth/login").permitAll()
                                 .anyRequest().permitAll())
 
                 /*.sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))*/
-                .logout((logout) -> logout.addLogoutHandler(clearSiteData).logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()));
+                .logout((logout) -> logout.addLogoutHandler(clearSiteData).logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler()))
 
-        // gestion des exceptions d'authentification
-        http.exceptionHandling(exception ->
-                exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
+                // gestion des exceptions d'authentification
+                .exceptionHandling(exception ->
+                exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 
-        // ajout du filtre jwt avant le filtre d'auth par username et password
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                // ajout du filtre jwt avant le filtre d'auth par username et password
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -116,29 +117,3 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
-
-
-// TrainerService == service de gestion des users
-    /*public AuthenticationManager authenticationManager(UserService userService, PasswordEncoder passwordEncoder) {
-        // fournisseur d'authentification
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        // définit l'encodeur de password
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-        // définit le service de gestion des users
-        daoAuthenticationProvider.setUserDetailsService(userService);
-        // return la gestion du fournisseur d'authentification
-        return new ProviderManager(daoAuthenticationProvider);
-    }*/
-
-// config cors pour permettre les requetes depuis l'origine spécifiée
-    /*UrlBasedCorsConfigurationSource myWebsiteConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // autorisation des requetes depuis cette origine
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        // autorise toutes les méthodes (GET, POST...)
-        configuration.setAllowedMethods(List.of("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // applique la config à toutes les requetes
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }*/
